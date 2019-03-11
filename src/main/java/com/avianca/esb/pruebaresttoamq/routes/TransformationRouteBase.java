@@ -15,6 +15,7 @@
  */
 package com.avianca.esb.pruebaresttoamq.routes;
 
+import org.apache.camel.component.metrics.MetricsConstants;
 import org.apache.camel.model.dataformat.JsonDataFormat;
 import org.apache.camel.model.dataformat.JsonLibrary;
 import org.springframework.stereotype.Component;
@@ -32,6 +33,8 @@ public class TransformationRouteBase extends ConfigurationRoute {
 		
 		//Here is where you need make all the process in the route.
 		from("direct:transformationRouteBase").id("pruebaresttoamq_transformation")
+			.setHeader(MetricsConstants.HEADER_METRIC_NAME, constant("new.name"))
+			.to("metrics:counter:name.not.used")
 			.bean("transformationComponent", "transformation")
 			.log("marshing ${body}")
 			//.marshal(json)

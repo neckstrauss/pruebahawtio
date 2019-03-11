@@ -15,6 +15,7 @@
  */
 package com.avianca.esb.pruebaresttoamq.routes;
 
+import org.apache.camel.component.metrics.MetricsConstants;
 import org.apache.camel.component.servlet.CamelHttpTransportServlet;
 import org.apache.camel.model.rest.RestBindingMode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,9 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
+import com.avianca.esb.pruebaresttoamq.configurador.ConfigurationRoute;
 import com.avianca.esb.pruebaresttoamq.model.Order;
 import com.avianca.esb.pruebaresttoamq.properties.RestConsumerBase;
-import com.avianca.esb.pruebaresttoamq.configurador.ConfigurationRoute;
 
 
 @Component
@@ -59,6 +60,7 @@ public class RestConsumerRouteBase extends ConfigurationRoute {
             .to("bean:orderService?method=getOrder(${header.id})")
             // need to specify the POJO types the binding is using (otherwise json binding defaults to Map based)
         .post()//.type(Order.class)
+        	
         	.to("direct:transformationRouteBase")
         	//.to("bean:orderService?method=createOrder")
             // need to specify the POJO types the binding is using (otherwise json binding defaults to Map based)
