@@ -57,17 +57,17 @@ public class ConfigurationRoute extends RouteBuilder {
 	public void configure() throws Exception {
 		// TODO Auto-generated method stub
 		getContext().setTracing(track);
-//		MetricsMessageHistoryFactory mmhf =new MetricsMessageHistoryFactory();
-//		mmhf.setUseJmx(true);
-//		mmhf.setMetricsRegistry(getMetricRegistry());
+		MetricsMessageHistoryFactory mmhf =new MetricsMessageHistoryFactory();
+		mmhf.setUseJmx(true);
+		mmhf.setMetricsRegistry(getMetricRegistry());
 //		
-//		getContext().setMessageHistoryFactory(mmhf);
+		getContext().setMessageHistoryFactory(mmhf);
 //		//get
 //		
-//		MetricsRoutePolicyFactory mrpf =new MetricsRoutePolicyFactory();
-//		mrpf.setUseJmx(true);
+		MetricsRoutePolicyFactory mrpf =new MetricsRoutePolicyFactory();
+		mrpf.setUseJmx(true);
 		
-//		getContext().addRoutePolicyFactory(mrpf);
+		getContext().addRoutePolicyFactory(mrpf);
 		
 		
 //		onException(Exception.class)
