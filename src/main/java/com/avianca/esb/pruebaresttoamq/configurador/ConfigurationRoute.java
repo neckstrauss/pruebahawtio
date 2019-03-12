@@ -16,9 +16,9 @@
 package com.avianca.esb.pruebaresttoamq.configurador;
 
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.component.metrics.messagehistory.MetricsMessageHistoryFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import com.avianca.esb.pruebaresttoamq.transformaciones.FailureErrorProcessor;
 
 @Component
 public class ConfigurationRoute extends RouteBuilder {
@@ -43,6 +43,12 @@ public class ConfigurationRoute extends RouteBuilder {
 	public void configure() throws Exception {
 		// TODO Auto-generated method stub
 		getContext().setTracing(track);
+		MetricsMessageHistoryFactory mmhf =new MetricsMessageHistoryFactory();
+		mmhf.setUseJmx(true);
+		
+		getContext().setMessageHistoryFactory(mmhf);
+		//get
+		
 		
 //		onException(Exception.class)
 //		.maximumRedeliveries(maximumRedeliveries)
