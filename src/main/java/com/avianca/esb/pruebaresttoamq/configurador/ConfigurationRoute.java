@@ -15,11 +15,10 @@
  */
 package com.avianca.esb.pruebaresttoamq.configurador;
 
-import org.apache.camel.CamelContext;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.component.metrics.MetricsComponent;
 import org.apache.camel.component.metrics.messagehistory.MetricsMessageHistoryFactory;
 import org.apache.camel.component.metrics.routepolicy.MetricsRoutePolicyFactory;
-import org.apache.camel.spring.boot.CamelContextConfiguration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -45,44 +44,30 @@ public class ConfigurationRoute extends RouteBuilder {
 	private Boolean errorHandle;
 	
 	
-	@Bean
-    MetricRegistry metricRegistry() {
-        return new MetricRegistry();
+	@Bean(name = MetricsComponent.METRIC_REGISTRY_NAME)
+    public MetricRegistry getMetricRegistry() {
+        MetricRegistry registry = new MetricRegistry();
+        return registry;
     }
 
-    @Bean
-    CamelContextConfiguration contextConfiguration() {
-        return new CamelContextConfiguration() {
-            @Override
-            public void beforeApplicationStart(CamelContext context) {
-                MetricsRoutePolicyFactory fac = new MetricsRoutePolicyFactory();
-                fac.setMetricsRegistry(metricRegistry());
-                context.addRoutePolicyFactory(fac);
-            }
-
-            @Override
-            public void afterApplicationStart(CamelContext camelContext) {
-                // noop
-            }
-        };
-    }
+    
 	
 	
 	@Override
 	public void configure() throws Exception {
 		// TODO Auto-generated method stub
 		getContext().setTracing(track);
-		MetricsMessageHistoryFactory mmhf =new MetricsMessageHistoryFactory();
-		mmhf.setUseJmx(true);
-		mmhf.setMetricsRegistry(metricRegistry());
+//		MetricsMessageHistoryFactory mmhf =new MetricsMessageHistoryFactory();
+//		mmhf.setUseJmx(true);
+//		mmhf.setMetricsRegistry(getMetricRegistry());
+//		
+//		getContext().setMessageHistoryFactory(mmhf);
+//		//get
+//		
+//		MetricsRoutePolicyFactory mrpf =new MetricsRoutePolicyFactory();
+//		mrpf.setUseJmx(true);
 		
-		getContext().setMessageHistoryFactory(mmhf);
-		//get
-		
-		MetricsRoutePolicyFactory mrpf =new MetricsRoutePolicyFactory();
-		mrpf.setUseJmx(true);
-		
-		getContext().addRoutePolicyFactory(mrpf);
+//		getContext().addRoutePolicyFactory(mrpf);
 		
 		
 //		onException(Exception.class)

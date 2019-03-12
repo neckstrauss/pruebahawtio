@@ -56,8 +56,14 @@ public class RestConsumerRouteBase extends ConfigurationRoute {
 
         rest(restConfig.getServiceName())
         // need to specify the POJO types the binding is using (otherwise json binding defaults to Map based)
-        .get("{id}").outType(Order.class)
+        .get("{id}").id("rest_get_prueba").outType(Order.class)
+	        .to("metrics:counter:name.not.used")
+			.to("metric:counter:simple.counter")
+			.to("metric:histogram:simple.histogram")
+			.to("metric:simple.meter")
+			.to("metrics:timer:simple.timer?action=start")
             .to("bean:orderService?method=getOrder(${header.id})")
+            .to("metrics:timer:simple.timer?action=stop")
             // need to specify the POJO types the binding is using (otherwise json binding defaults to Map based)
         .post()//.type(Order.class)
         	

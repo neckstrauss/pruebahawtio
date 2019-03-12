@@ -104,6 +104,12 @@
 			<artifactId>camel-metrics</artifactId>
 			<!-- use the same version as your Camel core version -->
 		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-metrics-starter</artifactId>
+			<!-- use the same version as your Camel core version -->
+		</dependency>
+
 	</dependencies>
 
 	<build>
