@@ -15,10 +15,16 @@
  */
 package com.avianca.esb.pruebaresttoamq.configurador;
 
+import org.apache.camel.CamelContext;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.metrics.messagehistory.MetricsMessageHistoryFactory;
+import org.apache.camel.component.metrics.routepolicy.MetricsRoutePolicyFactory;
+import org.apache.camel.spring.boot.CamelContextConfiguration;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+
+import com.codahale.metrics.MetricRegistry;
 
 @Component
 public class ConfigurationRoute extends RouteBuilder {
@@ -37,6 +43,29 @@ public class ConfigurationRoute extends RouteBuilder {
 	
 	@Value("${errorHandle}")
 	private Boolean errorHandle;
+	
+	
+	@Bean
+    MetricRegistry metricRegistry() {
+        return new MetricRegistry();
+    }
+
+    @Bean
+    CamelContextConfiguration contextConfiguration() {
+        return new CamelContextConfiguration() {
+            @Override
+            public void beforeApplicationStart(CamelContext context) {
+                MetricsRoutePolicyFactory fac = new MetricsRoutePolicyFactory();
+                fac.setMetricsRegistry(metricRegistry());
+                context.addRoutePolicyFactory(fac);
+            }
+
+            @Override
+            public void afterApplicationStart(CamelContext camelContext) {
+                // noop
+            }
+        };
+    }
 	
 	
 	@Override
