@@ -74,9 +74,15 @@ public class ConfigurationRoute extends RouteBuilder {
 		getContext().setTracing(track);
 		MetricsMessageHistoryFactory mmhf =new MetricsMessageHistoryFactory();
 		mmhf.setUseJmx(true);
+		mmhf.setMetricsRegistry(metricRegistry());
 		
 		getContext().setMessageHistoryFactory(mmhf);
 		//get
+		
+		MetricsRoutePolicyFactory mrpf =new MetricsRoutePolicyFactory();
+		mrpf.setUseJmx(true);
+		
+		getContext().addRoutePolicyFactory(mrpf);
 		
 		
 //		onException(Exception.class)
